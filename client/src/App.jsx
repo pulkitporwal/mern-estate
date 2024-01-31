@@ -5,10 +5,13 @@ import Signin from "./pages/Signin.jsx"
 import Signup from "./pages/Signup.jsx"
 import About from "./pages/About.jsx"
 import Profile from "./pages/Profile.jsx"
+import Navbar from "./components/Navbar.jsx"
+
 
 function App() {
   return (
       <BrowserRouter>
+      <Navbar/>
         <Routes>
           <Route path={'/'} element={<Home/>}/>
           <Route path={'/Signin'} element={<Signin/>}/>
