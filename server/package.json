@@ -1,0 +1,25 @@
+{
+  "name": "mern-estate",
+  "version": "1.0.0",
+  "description": "It is a full fledged Estate application where user can list out their properties.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "mern-estate",
+    "mern",
+    "estate",
+    "property-listing-application"
+  ],
+  "author": "Pulkit Porwal",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}
