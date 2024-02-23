@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 export default async function(){
     try {
         const databaseInstance = await mongoose.connect(
-          `${process.env.MONGODB_URI}/mern-estate`
+          `${process.env.MONGODB_URI}/mern-estate`,
         );
         console.log(
           "Databse Connected to Host",
