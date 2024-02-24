@@ -46,8 +46,6 @@ const signin = async (req, res) => {
 
 	const { password: pass, ...rest } = validUser._doc;
 
-	console.log(password)
-
 	return res
 		.status(200)
 		.cookie("accessToken", token, { httpOnly: true })
