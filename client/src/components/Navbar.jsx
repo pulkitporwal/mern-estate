@@ -5,14 +5,13 @@ import { useSelector } from "react-redux";
 
 const Navbar = () => {
 	const userInfo = useSelector((state) => state.user) || null;
-	console.log(userInfo);
 	return (
 		<div className="px-1 sm:px-10 bg-red-100">
 			<div className="flex items-center justify-between p-3 px-5 sm:px-10  border-b-[2px] border-gray-200">
-				<Link to={'/'}>
-				<h1 className="text-2xl py-1 px-4 rounded-lg bg-red-500 text-white">
-					Estate
-				</h1>
+				<Link to={"/"}>
+					<h1 className="text-2xl py-1 px-4 rounded-lg bg-red-500 text-white">
+						Estate
+					</h1>
 				</Link>
 
 				<form className="sm:w-[300px] bg-slate-100 rounded-lg flex sm:ml-20 ml-0 px-2 py-2 items-center justify-between">
