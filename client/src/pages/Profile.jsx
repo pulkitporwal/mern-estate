@@ -22,7 +22,7 @@ import {
 } from "../redux/user/userSlice";
 import Loader from "../components/Loader";
 import toast, { Toaster } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Profile = () => {
 	const { currentUser } = useSelector((state) => state.user);
@@ -247,7 +247,11 @@ const Profile = () => {
 				<button className="w-[350px] sm:w-[400px] bg-red-500 text-white hover:opacity-85 disabled:opacity-45 p-[0.5rem] rounded-lg">
 					Update
 				</button>
+				<Link className="w-[350px] sm:w-[400px] text-center bg-yellow-500 text-white hover:opacity-85 disabled:opacity-45 p-[0.5rem] rounded-lg" to={"/create-listing"}>
+				Create a Listing
+				</Link>
 			</form>
+			
 			<div className="flex justify-between mx-8 sm:mx-12 my-5">
 				<span
 					onClick={handleDeleteUser}
