@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import Listing from "../models/listing.model.js";
 import bcryptjs from "bcryptjs";
 
 export const testController = (req, res) => {
@@ -60,5 +61,23 @@ export const deleteUser = async (req, res, next) => {
 			success: false,
 			message: "Error while deleting your account",
 		});
+	}
+};
+
+export const showUserListings = async (req, res) => {
+	if (req.userData.id === req.params.id) {
+		const listingsArray = await Listing.find({ userRef: req.params.id });
+		return res.status(201).json({
+			success: true,
+			message: "Listings Found",
+			listingsArray,
+		});
+	} else {
+		return res
+			.status(404)
+			.json({
+				success: false,
+				message: "Error Occured while getting data",
+			});
 	}
 };

@@ -247,9 +247,15 @@ const Profile = () => {
 				<button className="w-[350px] sm:w-[400px] bg-red-500 text-white hover:opacity-85 disabled:opacity-45 p-[0.5rem] rounded-lg">
 					Update
 				</button>
-				<Link className="w-[350px] sm:w-[400px] text-center bg-yellow-500 text-white hover:opacity-85 disabled:opacity-45 p-[0.5rem] rounded-lg" to={"/create-listing"}>
+				<div className="w-full px-5 sm:px-[2.6rem]">
+
+				<Link className="w-[500px] sm:w-[5000px] text-center bg-yellow-500 text-white hover:opacity-85 disabled:opacity-45 p-[0.5rem] rounded-lg" to={"/create-listing"}>
 				Create a Listing
 				</Link>
+				<Link className="w-[500px] sm:w-[5000px] text-center bg-blue-500 text-white hover:opacity-85 disabled:opacity-45 p-[0.5rem] rounded-lg" to={"/my-listings"}>
+				My Listings
+				</Link>
+				</div>
 			</form>
 			
 			<div className="flex justify-between mx-8 sm:mx-12 my-5">

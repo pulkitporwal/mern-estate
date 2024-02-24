@@ -1,12 +1,18 @@
-import express from 'express'
-import { deleteUser, testController, updateUser } from '../controllers/user.controller.js'
-import { verifyToken } from '../utils/verifyJWT.js'
+import express from "express";
+import {
+	deleteUser,
+	showUserListings,
+	testController,
+	updateUser,
+} from "../controllers/user.controller.js";
+import { verifyToken } from "../utils/verifyJWT.js";
 
-const router = express.Router()
+const router = express.Router();
 
-router.get('/test',testController)
+router.get("/test", testController);
 
-router.post('/update/:id',verifyToken,updateUser)
-router.delete('/delete/:id',verifyToken,deleteUser)
+router.post("/update/:id", verifyToken, updateUser);
+router.delete("/delete/:id", verifyToken, deleteUser);
+router.get("/mylistings/:id", verifyToken, showUserListings);
 
 export default router;

@@ -8,6 +8,8 @@ import Profile from "./pages/Profile.jsx";
 import Navbar from "./components/Navbar.jsx";
 import PrivateRoute from "./components/PrivateRoute.jsx";
 import CreateListing from "./pages/CreateListing.jsx";
+import MyListings from "./pages/MyListings.jsx";
+import Listing from "./components/Listing.jsx";
 
 function App() {
 	return (
@@ -25,6 +27,8 @@ function App() {
 						path={"/create-listing"}
 						element={<CreateListing />}
 					/>
+					<Route path={"/my-listings"} element={<MyListings />} />
+					<Route path={"/my-listings/:listingId"} element={<Listing />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>

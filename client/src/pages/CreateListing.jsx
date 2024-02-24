@@ -148,7 +148,7 @@ export default function CreateListing() {
 			if (data.success == true) {
 				setLoading(false);
 				toast.success("Your Property has been successfully listed");
-				navigate("/");
+				navigate("/my-listings");
 			}
 		} catch (error) {
 			setError(error.message);
