@@ -20,7 +20,6 @@ const listingSchema = new Schema(
 		},
 		discountedPrice: {
 			type: Number,
-			required: true,
 		},
 		bathrooms: {
 			type: Number,
