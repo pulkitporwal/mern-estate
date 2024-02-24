@@ -56,4 +56,18 @@ const signin = async (req, res) => {
 		});
 };
 
-export { signup, signin };
+const signout = async (req, res, next) => {
+	try {
+		return res
+			.clearCookie("accessToken")
+			.status(200)
+			.json("User has been Signed out!");
+	} catch (error) {
+		return res.status(402).json({
+			success: false,
+			message: "Smething went wrong while signing out",
+		});
+	}
+};
+
+export { signup, signin, signout };

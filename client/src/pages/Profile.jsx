@@ -16,6 +16,9 @@ import {
 	deleteUserStart,
 	deleteUserSuccess,
 	deleteUserFailure,
+	signoutUserStart,
+	signinSuccess,
+	signoutUserFailure,
 } from "../redux/user/userSlice";
 import Loader from "../components/Loader";
 import toast, { Toaster } from "react-hot-toast";
@@ -138,6 +141,22 @@ const Profile = () => {
 		}
 	}
 
+	async function handleSignout() {
+		dispatch(signoutUserStart());
+		const res = await fetch("/api/auth/signout");
+		const data = await res.json();
+		if (data.success === false) {
+			dispatch(signoutUserFailure(data.message));
+			errorToaster(data.message);
+		} else {
+			dispatch(signinSuccess());
+			successToaster("User Signed Out Successfully");
+			setTimeout(() => {
+				navigate("/signin");
+			}, 1000);
+		}
+	}
+
 	return (
 		<div className="p-3 max-w-lg mx-auto">
 			{loading ? <Loader /> : ""}
@@ -178,7 +197,9 @@ const Profile = () => {
 						Error in Image Upload
 					</span>
 				) : fileProgress > 0 && fileProgress < 100 ? (
-					<span className="font-bold text-green-700">{fileProgressMessage}</span>
+					<span className="font-bold text-green-700">
+						{fileProgressMessage}
+					</span>
 				) : fileProgress == 100 ? (
 					<span className="text-green-700 font-bold">
 						{fileProgressMessage}
@@ -235,7 +256,7 @@ const Profile = () => {
 					Delete account
 				</span>
 				<span
-					// onClick={handleSignOut}
+					onClick={handleSignout}
 					className="text-red-700 cursor-pointer"
 				>
 					Sign out
