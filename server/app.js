@@ -13,4 +13,7 @@ app.use("/api/user", userRouter);
 import authRouter from "./routers/auth.router.js";
 app.use("/api/auth", authRouter);
 
+import listingRouter from './routers/listing.router.js'
+app.use('/api/listing',listingRouter)
+
 export default app;
