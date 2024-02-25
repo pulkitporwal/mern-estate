@@ -93,3 +93,50 @@ export const getListing = async (req, res) => {
 		});
 	}
 };
+
+export const searchListing = async (req, res) => {
+	try {
+		const searchTerm = req.query.searchTerm || "";
+		const offer = req.query.offer || "";
+		const furnished = req.query.furnished || "";
+		const parking = req.query.parking || "";
+		const type = req.query.type || "";
+		const sort = req.query.sort || "createdAt";
+		const order = req.query.order || "desc";
+		const limit = parseInt(req.query.limit) || 9;
+		const startIndex = parseInt(req.query.startIndex) || 0;
+
+		const query = {
+			name: { $regex: searchTerm, $options: "i" },
+		};
+
+		if (offer !== "") {
+			query.offer = offer === "true";
+		}
+
+		if (furnished !== "") {
+			query.furnished = furnished === "true";
+		}
+
+		if (parking !== "") {
+			query.parking = parking === "true";
+		}
+
+		if (type !== "") {
+			query.type = type;
+		}
+
+		const listings = await Listing.find(query)
+			.sort({ [sort]: order })
+			.limit(limit)
+			.skip(startIndex);
+
+		return res.status(200).json(listings);
+	} catch (error) {
+		console.error("Error searching listings:", error);
+		return res.status(500).json({
+			success: false,
+			message: "Error searching listings",
+		});
+	}
+};
