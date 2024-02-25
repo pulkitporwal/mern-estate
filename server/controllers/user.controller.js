@@ -81,3 +81,19 @@ export const showUserListings = async (req, res) => {
 			});
 	}
 };
+
+
+export const getLandlordUser = async (req,res)=>{
+	try {
+    
+		const landlord = await User.findById(req.params.id);
+	  
+		if (!landlord) return next(errorHandler(404, 'User not found!'));
+	  
+		const { password: pass, ...landlordInfo } = landlord._doc;
+	  
+		return res.status(200).json(landlordInfo);
+	  } catch (error) {
+		return res.status(400).json({success: false, message: "Error while getting landlord information"})
+	  }
+}

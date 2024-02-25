@@ -1,6 +1,7 @@
 import express from "express";
 import {
 	deleteUser,
+	getLandlordUser,
 	showUserListings,
 	testController,
 	updateUser,
@@ -14,5 +15,6 @@ router.get("/test", testController);
 router.post("/update/:id", verifyToken, updateUser);
 router.delete("/delete/:id", verifyToken, deleteUser);
 router.get("/mylistings/:id", verifyToken, showUserListings);
+router.get("/getlandlord/:id",verifyToken, getLandlordUser);
 
 export default router;

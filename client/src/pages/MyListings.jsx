@@ -28,7 +28,7 @@ const MyListings = () => {
   const navigate = useNavigate();
 
   const openListing = (listingId) => {
-    navigate(`/my-listing/${listingId}`);
+    navigate(`/listing/${listingId}`);
   };
 
   const deleteListing = async (listingId) => {
