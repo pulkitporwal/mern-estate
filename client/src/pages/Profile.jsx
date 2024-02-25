@@ -247,12 +247,12 @@ const Profile = () => {
 				<button className="w-[350px] sm:w-[400px] bg-red-500 text-white hover:opacity-85 disabled:opacity-45 p-[0.5rem] rounded-lg">
 					Update
 				</button>
-				<div className="w-full px-5 sm:px-[2.6rem]">
+				<div className="w-full flex gap-4 px-5 sm:px-[2.6rem]">
 
-				<Link className="w-[500px] sm:w-[5000px] text-center bg-yellow-500 text-white hover:opacity-85 disabled:opacity-45 p-[0.5rem] rounded-lg" to={"/create-listing"}>
+				<Link className="w-[600px] flex-1 text-center bg-yellow-500 text-white hover:opacity-85 disabled:opacity-45 p-[0.5rem] rounded-lg" to={"/create-listing"}>
 				Create a Listing
 				</Link>
-				<Link className="w-[500px] sm:w-[5000px] text-center bg-blue-500 text-white hover:opacity-85 disabled:opacity-45 p-[0.5rem] rounded-lg" to={"/my-listings"}>
+				<Link className="w-[600px] flex-1 text-center bg-blue-500 text-white hover:opacity-85 disabled:opacity-45 p-[0.5rem] rounded-lg" to={"/my-listings"}>
 				My Listings
 				</Link>
 				</div>

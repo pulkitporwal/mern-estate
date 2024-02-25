@@ -5,7 +5,9 @@ const Listing = () => {
 	const {listingId} = useParams();
   return (
 	<div>
-	  <p>{listingId}</p>
+	  <div>
+		
+	  </div>
 	</div>
   )
 }
