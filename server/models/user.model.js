@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema(
     },
     avatar:{
       type: String,
-      default: "https://firebasestorage.googleapis.com/v0/b/mern-estate-jivans.appspot.com/o/default_profile.png?alt=media&token=3cf10f7a-56b4-4653-b720-a2180a87be4f"
+      default: "https://firebasestorage.googleapis.com/v0/b/mern-estate-jivan.appspot.com/o/default_profile.png?alt=media&token=23f2db5b-2039-441b-9c2f-55544ed69583"
     },
     name: {
       type: String,

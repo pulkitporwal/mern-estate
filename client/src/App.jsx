@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar.jsx";
 import PrivateRoute from "./components/PrivateRoute.jsx";
 import CreateListing from "./pages/CreateListing.jsx";
 import MyListings from "./pages/MyListings.jsx";
+import EditListing from "./pages/EditListing.jsx";
 import Listing from "./components/Listing.jsx";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
 				<Route path={"/Signin"} element={<Signin />} />
 				<Route path={"/signup"} element={<Signup />} />
 				<Route path={"/about"} element={<About />} />
+				<Route path={"/listing/:listingId"} element={<Listing />} />
 
 				<Route element={<PrivateRoute />}>
 					<Route path={"/profile"} element={<Profile />} />
@@ -28,7 +30,11 @@ function App() {
 						element={<CreateListing />}
 					/>
 					<Route path={"/my-listings"} element={<MyListings />} />
-					<Route path={"/my-listings/:listingId"} element={<Listing />} />
+
+					<Route
+						path={"/edit-listing/:listingId"}
+						element={<EditListing />}
+					/>
 				</Route>
 			</Routes>
 		</BrowserRouter>

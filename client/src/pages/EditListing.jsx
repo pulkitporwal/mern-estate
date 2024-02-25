@@ -3,38 +3,42 @@ import {
 	getStorage,
 	ref,
 	uploadBytesResumable,
+	deleteObject,
+  list, // Add this import for removing images
 } from "firebase/storage";
 import { app } from "../../firebase.js";
-import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast"; // Import toast and Toaster
 import Loader from "../components/Loader.jsx";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export default function CreateListing() {
 	const { currentUser } = useSelector((state) => state.user);
+	const { listingId } = useParams();
 	const navigate = useNavigate();
 	const [ImageFiles, setImageFiles] = useState([]);
-	const [formData, setFormData] = useState({
-		imageUrls: [],
-		name: "",
-		description: "",
-		address: "",
-		type: "rent",
-		bedrooms: 1,
-		bathrooms: 1,
-		regularPrice: 50,
-		discountPrice: 0,
-		offer: false,
-		parking: false,
-		furnished: false,
-	});
-	// console.log(currentUser.userData._id);
-	// console.log({ ...formData, userRef: currentUser.userData._id });
+	const [formData, setFormData] = useState({});
 
 	const [uploadingProgress, setUploadingProgress] = useState(0);
 	const [error, setError] = useState(false);
 	const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const res = await fetch(`/api/listing/getListing/${listingId}`);
+				const data = await res.json();
+				setFormData(data.listingData);
+			} catch (error) {
+				console.error("Error fetching listing data:", error);
+				toast.error("Error fetching listing data");
+			}
+		};
+
+		fetchData();
+	}, [listingId]);
 
 	const handleInputChanges = (e) => {
 		if (e.target.id === "sale" || e.target.id === "rent") {
@@ -81,6 +85,7 @@ export default function CreateListing() {
 						...formData,
 						imageUrls: [...formData.imageUrls, ...urls],
 					});
+					toast.success("Images uploaded successfully");
 				})
 				.catch((error) => {
 					toast.error(`Error uploading images: ${error}`);
@@ -126,14 +131,13 @@ export default function CreateListing() {
 
 			setError(false);
 
-			const res = await fetch("/api/listing/create", {
+			const res = await fetch(`/api/listing/update/${listingId}`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
 					...formData,
-					userRef: currentUser.userData._id,
 				}),
 			});
 
@@ -153,6 +157,7 @@ export default function CreateListing() {
 		} catch (error) {
 			setError(error.message);
 			setLoading(false);
+			toast.error("Error submitting form");
 		}
 	};
 
@@ -175,10 +180,11 @@ export default function CreateListing() {
 	};
 
 	return (
+
 		<main className="p-3 max-w-4xl mx-auto">
 			{loading ? <Loader /> : ""}
 			<h1 className="text-3xl font-semibold text-center my-2">
-				Create a Listing
+				Edit a Listing
 			</h1>
 			<form onSubmit={handleFormSubmit} className="flex flex-col gap-4 ">
 				<div>
@@ -355,13 +361,12 @@ export default function CreateListing() {
 									id="images"
 									accept="images/*"
 									multiple
-									required
 								/>
 
-								<button
+								<div
 									type="button"
 									onClick={handleImageUpload}
-									className="w-[350px] sm:w-[400px] text-center bg-yellow-500 flex-[1] text-black hover:opacity-85 disabled:opacity-45 p-[0.5rem] rounded-lg mt-5"
+									className="w-[350px] sm:w-[400px] flex items-center justify-center text-center bg-yellow-500 flex-[1] text-black hover:opacity-85 disabled:opacity-45 p-[0.5rem] rounded-lg mt-5"
 								>
 									{uploadingProgress > 0 &&
 									uploadingProgress < 100
@@ -369,12 +374,12 @@ export default function CreateListing() {
 										: uploadingProgress == 100
 										? "Uploaded"
 										: "Upload"}
-								</button>
+								</div>
 							</div>
 						</div>
 						<div>
 							<div className="flex flex-wrap gap-3 mt-3">
-								{formData?.imageUrls.length > 0 &&
+								{formData?.imageUrls?.length > 0 &&
 									formData?.imageUrls.map((url, index) => (
 										<div key={index} className="relative">
 											<img
@@ -386,9 +391,20 @@ export default function CreateListing() {
 												onClick={() =>
 													removeImage(index)
 												}
-												className="absolute p-2 top-0 right-0 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center focus:outline-none transform translate-x-1/2 -translate-y-1/2 -translate-x-full"
+												className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center focus:outline-none transform translate-x-1/2 -translate-y-1/2 -translate-x-full"
 											>
-												&times;
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													className="h-3 w-3"
+													viewBox="0 0 20 20"
+													fill="currentColor"
+												>
+													<path
+														fillRule="evenodd"
+														d="M3.293 3.293a1 1 0 011.414 0L10 8.586l5.293-5.293a1 1 0 111.414 1.414L11.414 10l5.293 5.293a1 1 0 01-1.414 1.414L10 11.414l-5.293 5.293a1 1 0 01-1.414-1.414L8.586 10 3.293 4.707a1 1 0 010-1.414z"
+														clipRule="evenodd"
+													/>
+												</svg>
 											</button>
 										</div>
 									))}
@@ -400,7 +416,7 @@ export default function CreateListing() {
 					type="submit"
 					className="w-full bg-red-500 text-white hover:opacity-85 disabled:opacity-45 p-[0.5rem] rounded-lg"
 				>
-					Create a Listing
+					Update the Listing
 				</button>
 			</form>
 			<Toaster />
