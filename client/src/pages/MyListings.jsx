@@ -10,21 +10,40 @@ import {
 import { BiSolidOffer } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
+import Loader from "../components/Loader";
 
 const MyListings = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [myListingData, setMyListingData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("Fetching listings...");
     const fetchListings = async () => {
-      const res = await fetch(
-        `/api/user/mylistings/${currentUser.userData._id}`
-      );
-      const data = await res.json();
-      setMyListingData(data.listingsArray);
+      try {
+        const res = await fetch(
+          `/api/user/mylistings/${currentUser.userData._id}`
+        );
+        if (!res.ok) {
+          throw new Error('Failed to fetch listings');
+        }
+        const data = await res.json();
+        console.log("Listings data:", data); // Log the received data
+        if (data && data.listingsArray) {
+          setMyListingData(data.listingsArray);
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("Failed to fetch listings");
+      } finally {
+        setLoading(false);
+      }
     };
-    fetchListings();
+    if (currentUser) {
+      fetchListings();
+    }
   }, [currentUser]);
+
   const navigate = useNavigate();
 
   const openListing = (listingId) => {
@@ -37,18 +56,21 @@ const MyListings = () => {
     );
 
     if (areYouSure) {
-      const res = await fetch(`/api/listing/delete/${listingId}`, {
-        method: "DELETE",
-      });
-      const data = await res.json();
+      try {
+        const res = await fetch(`/api/listing/delete/${listingId}`, {
+          method: "DELETE",
+        });
+        const data = await res.json();
 
-      if (data.success) {
-        toast.success(data);
-        navigate("/my-listings");
-      }
-
-      if (!data.success) {
-        toast.error(data);
+        if (data.success) {
+          toast.success(data.message || "Listing deleted successfully");
+          navigate("/my-listings");
+        } else {
+          throw new Error(data.message || "Failed to delete listing");
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("Failed to delete listing");
       }
       setTimeout(() => {
         window.location.reload();
@@ -59,6 +81,10 @@ const MyListings = () => {
   const updateListing = (listingId) => {
     navigate(`/edit-listing/${listingId}`);
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div>

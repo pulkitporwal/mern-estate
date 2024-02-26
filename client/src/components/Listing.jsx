@@ -104,6 +104,9 @@ const Listing = () => {
 									)}
 								</p>
 							</div>
+							<p className="font-bold mx-3 text-xl mt-5">
+							₹ {listingData.listingData.regularPrice}
+							</p>
 							<p className="text-gray-500 mx-3 text-[16px] my-5">
 								{listingData.listingData.description}
 							</p>
