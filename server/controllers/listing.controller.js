@@ -106,30 +106,36 @@ export const searchListing = async (req, res) => {
 		const limit = parseInt(req.query.limit) || 9;
 		const startIndex = parseInt(req.query.startIndex) || 0;
 
-		const query = {
+		// Aggregation pipeline stages for filtering
+		const pipeline = [];
+
+		// Match stage
+		const matchQuery = {
 			name: { $regex: searchTerm, $options: "i" },
 		};
-
 		if (offer !== "") {
-			query.offer = offer === "true";
+			matchQuery.offer = offer === "true";
 		}
-
 		if (furnished !== "") {
-			query.furnished = furnished === "true";
+			matchQuery.furnished = furnished === "true";
 		}
-
 		if (parking !== "") {
-			query.parking = parking === "true";
+			matchQuery.parking = parking === "true";
 		}
-
 		if (type !== "") {
-			query.type = type;
+			matchQuery.type = type;
 		}
+		pipeline.push({ $match: matchQuery });
 
-		const listings = await Listing.find(query)
-			.sort({ [sort]: order })
-			.limit(limit)
-			.skip(startIndex);
+		// Sort stage
+		pipeline.push({ $sort: { [sort]: order === "asc" ? 1 : -1 } });
+
+		// Pagination stage
+		pipeline.push({ $skip: startIndex });
+		pipeline.push({ $limit: limit });
+
+		// Execute aggregation pipeline
+		const listings = await Listing.aggregate(pipeline);
 
 		return res.status(200).json(listings);
 	} catch (error) {

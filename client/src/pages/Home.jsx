@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion"; // For animations
 import { toast, Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-
 import Loader from "../components/Loader.jsx";
 
 const HomePage = () => {
 	const navigate = useNavigate();
 	const [listings, setListings] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const [searchTerm, setSearchTerm] = useState("");
 
 	useEffect(() => {
 		const fetchListings = async () => {
@@ -35,6 +35,11 @@ const HomePage = () => {
 		navigate(`/listing/${listingId}`);
 	};
 
+	const handleSearchSubmit = (e) => {
+		e.preventDefault();
+		navigate(`/search?searchTerm=${searchTerm}`);
+	};
+
 	if (loading) {
 		return <Loader />;
 	}
@@ -51,21 +56,27 @@ const HomePage = () => {
 					>
 						Find Your Dream Home
 					</motion.h1>
-					<div className="max-w-lg mx-auto flex items-center">
+					<form
+						onSubmit={handleSearchSubmit}
+						className="max-w-lg mx-auto flex items-center"
+					>
 						<input
 							type="text"
 							placeholder="Search for listings..."
 							className="flex-1 sm:w-[500px] px-4 py-3 rounded-lg shadow-md focus:outline-none focus:ring focus:border-blue-300"
+							value={searchTerm}
+							onChange={(e) => setSearchTerm(e.target.value)}
 						/>
 						<motion.button
-						className="rounded-lg ml-3 px-6 py-[0.6rem] border-2 border-red-600 text-white hover:bg-red-600 hover:text-red-100 duration-300"
-						initial={{ opacity: 0, y: -20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ delay: 0.6, duration: 0.5 }}
-					>
-						Search
-					</motion.button>
-					</div>
+							type="submit"
+							className="rounded-lg ml-3 px-6 py-[0.6rem] border-2 border-red-600 text-white hover:bg-red-600 hover:text-red-100 duration-300"
+							initial={{ opacity: 0, y: -20 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ delay: 0.6, duration: 0.5 }}
+						>
+							Search
+						</motion.button>
+					</form>
 					<motion.p
 						className="text-lg lg:text-xl text-white mb-8 max-w-lg mt-5"
 						initial={{ opacity: 0, y: -20 }}
@@ -75,7 +86,6 @@ const HomePage = () => {
 						Explore top listings and discover your <br />
 						perfect listing
 					</motion.p>
-					
 				</div>
 			</div>
 
@@ -106,7 +116,7 @@ const HomePage = () => {
 									{listing.description}
 								</p>
 								<p className="text-lg font-bold">
-                ₹ {listing.regularPrice}
+									₹ {listing.regularPrice}
 								</p>
 							</div>
 						</motion.div>
